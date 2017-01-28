@@ -1,0 +1,80 @@
+{%- comment -%}
+
+  Find a list of up to 4 related products for the `product` in the current context, and display
+  them using the theme's `product.liquid` snippet.
+
+  Related products could be sourced from one of 3 places, which are tried in order:
+
+    1. A `theme.related_products` metafield on the product object, which is expected to contain
+       a comma-separated list of related product handles.
+
+    2. A collection with the handle `product-handle-related`, where `product-handle` is the handle
+       of the current product.
+
+    3. If neither of these are detected, the list of products is calculated manually by:
+
+         (a) first, finding a "relevant" collection (defined as a collection the current product is
+             in that isn't the `all` collection and that contains more than 4 products;
+
+         (b) second, scoring each of the products in that collection by virtue of similarities in
+             tags.
+
+{%- endcomment -%}
+
+{%- assign RELATED_PRODUCTS_LIMIT = 4 -%}
+
+{%- comment -%}
+  Start by trying to find an explicit list of related products in a metafield.
+{%- endcomment -%}
+{%- if product.metafields.theme.related_products != blank -%}
+  {%- assign displayed_related_products_count = 0 -%}
+  {%- assign related_product_handles = product.metafields.theme.related_products | split: ',' -%}
+  {%- for related_product_handle in related_product_handles -%}
+    {%- assign related_product = all_products[related_product_handle] -%}
+
+    {%- if related_product -%}
+      {%- include 'product' with related_product -%}
+      {%- assign displayed_related_products_count = displayed_related_products_count | plus: 1 -%}
+    {%- endif -%}
+
+    {%- if displayed_related_products_count == RELATED_PRODUCTS_LIMIT -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- else -%}
+
+  {%- comment -%}
+    Try to find a related collection using the product handle.
+  {%- endcomment -%}
+  {%- assign related_collection_handle = product.handle | append: '-related' -%}
+  {%- assign related_collection = collections[related_collection_handle] -%}
+  {%- if related_collection and related_collection.products.size > 0 %}
+    {%- for related_product in related_collection.products limit: RELATED_PRODUCTS_LIMIT -%}
+      {%- include 'product' with related_product -%}
+    {%- endfor -%}
+  {%- else -%}
+
+    {%- comment -%}
+      Fall back to using products from a similar collection.
+    {%- endcomment -%}
+
+    {%- assign related_collection = nil -%}
+    {%- for collection in product.collections -%}
+      {%- unless collection.handle == 'all' -%}
+      {%- if related_collection == blank or collection.products.size > related_collection.products.size -%}
+        {%- assign related_collection = collection -%}
+        {%- if related_collection.products.size > 5 -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endif -%}
+      {%- endunless -%}
+    {%- endfor -%}
+
+    {%- for related_product in related_collection.products limit: RELATED_PRODUCTS_LIMIT -%}
+      {%- include 'product' with related_product -%}
+    {%- endfor -%}
+
+  {%- endif -%}
+
+{%- endif -%}
+
