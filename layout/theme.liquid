@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    {{ content_for_header }}
+    {{- 'styles.css' | asset_url | stylesheet_tag -}}
+  </head>
+  <body>
+    {{ content_for_layout }}
+    {{- 'theme.js' | asset_url | script_tag -}}
+  </body>
+</html>
