@@ -38,9 +38,25 @@
     {%- unless primary_link_list == blank -%}
     <ul class="navbar-nav mr-auto">
       {%- for link in primary_link_list.links -%}
-      <li class="nav-item {% if link.active %}active{% endif %}">
-        <a class="nav-link" href="{{ link.url }}">{{ link.title | escape }} {% if link.active %}<span class="sr-only">(current)</span>{% endif %}</a>
-      </li>
+        {%- assign child_link_list_handle = link.title | handle -%}
+        {%- assign child_link_list = linklists[child_link_list_handle] -%}
+        {%- if child_link_list and child_link_list.links.size > 0 -%}
+          {%- assign has_child_link_list = true %}
+        {%- else- %}
+          {%- assign has_child_link_list = false %}
+        {%- endif -%}
+        <li class="nav-item {% if link.active %}active{% endif %} {% if has_child_link_list %}dropdown{% endif %}">
+          <a href="{{ link.url }}" class="nav-link {% if has_child_link_list %}dropdown-toggle{%  endif %} %}" {% if has_child_link_list %}id="{{ child_link_list_handle }}-dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{% endif %}>
+            {{ link.title | escape }} {% if link.active %}<span class="sr-only">(current)</span>{% endif %}
+          </a>
+          {%- if has_child_link_list -%}
+            <div class="dropdown-menu" aria-labelledby="{{ child_link_list_handle }}-dropdown-toggle">
+              {%- for child_link in child_link_list.links -%}
+                <a href="{{ child_link.url }}" class="dropdown-item">{{ child_link.title | escape }}</a>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        </li>
       {%- endfor -%}
     </ul>
     {%- endunless -%}
