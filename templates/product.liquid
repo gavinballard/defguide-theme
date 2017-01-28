@@ -1,46 +1,78 @@
 <main class="bg-white">
   <div class="container py-5">
 
-  <div class="row">
+    <div class="row">
 
-    {%- comment -%}
-      Display the product's images in a carousel format with sliding thumbnails at the bottom. If the product doesn't
-      have any available images, a placeholder is display.
-    {%- endcomment -%}
-    <div class="col-md-5">
-      {%- if product.images.size > 0 -%}
-        <div id="product-image-carousel" class="carousel slide">
-          <div class="carousel-inner" role="listbox">
-            {%- for image in product.images -%}
-            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-              <img class="d-block img-fluid" src="{{ image | product_img_url: '480x480', scale: 2, crop: 'center' }}" alt="{{ product.title | escape }}" />
+      {%- comment -%}
+        Display the product's images in a carousel format with sliding thumbnails at the bottom. If the product doesn't
+        have any available images, a placeholder is display.
+      {%- endcomment -%}
+      <div class="col-md-5">
+        {%- if product.images.size > 0 -%}
+          <div id="product-image-carousel" class="carousel slide">
+            <div class="carousel-inner" role="listbox">
+              {%- for image in product.images -%}
+              <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img class="d-block img-fluid" src="{{ image | product_img_url: '480x480', scale: 2, crop: 'center' }}" alt="{{ product.title | escape }}" />
+              </div>
+              {%- endfor -%}
             </div>
+            <a class="carousel-control-prev" href="#product-image-carousel" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#product-image-carousel" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+          <div class="row">
+            {%- for image in product.images -%}
+              <div class="col-md-3 mt-3">
+                <a href="{{ image | product_img_url: 'master' }}" target="_blank" data-target="#product-image-carousel" data-slide-to="{{ forloop.index0 }}">
+                  <img class="img-thumbnail" src="{{ image | product_img_url: '240x240', scale: 2, crop: 'center' }}" alt="{{ product.title | escape }}" />
+                </a>
+              </div>
             {%- endfor -%}
           </div>
-          <a class="carousel-control-prev" href="#product-image-carousel" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#product-image-carousel" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-          </a>
-        </div>
-        <div class="row">
-          {%- for image in product.images -%}
-            <div class="col-md-3 mt-3">
-              <a href="{{ image | product_img_url: 'master' }}" target="_blank" data-target="#product-image-carousel" data-slide-to="{{ forloop.index0 }}">
-                <img class="img-thumbnail" src="{{ image | product_img_url: '240x240', scale: 2, crop: 'center' }}" alt="{{ product.title | escape }}" />
-              </a>
-            </div>
-          {%- endfor -%}
-        </div>
-      {%- else -%}
-        {{ 'image' | placeholder_svg_tag: 'd-block img-fluid bg-faded' }}
-      {%- endif -%}
-    </div>
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'd-block img-fluid bg-faded' }}
+        {%- endif -%}
+      </div>
 
-  </div>
+      {%- comment -%}
+        Display product details (title, vendor, price and description) followed by an add to cart form.
+      {%- endcomment -%}
+      <div class="col-md-7">
+        <h1>{{ product.title | escape }}</h1>
+        <h5 class="text-muted">{{ product.vendor | escape }}</h5>
+        <h3>{% if product.price_varies %}{{ product.price_min | money }} - {{ product.price_max | money }}{% else %}{{ product.price | money }}{% endif %}</h3>
+
+        <hr />
+        {{ product.description }}
+        <hr />
+
+        <form action="/cart/add" method="post" role="form">
+
+          {%- if product.variants.size > 1 -%}
+            <div class="form-group">
+              <label for="product-select">Select your {{ product.title | downcase }}</label>
+              <select id="product-select" name="id" class="form-control">
+                {%- for variant in product.variants -%}
+                  <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title | escape }} - {{ variant.price | money }}</option>
+                {%- endfor -%}
+              </select>
+            </div>
+          {%- else =%}
+            <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+          {%- endif -%}
+
+          <button type="submit" class="btn btn-primary btn-lg" {% unless product.available %}disabled="disabled"{% endunless %}>Add to cart</button>
+
+        </form>
+      </div>
+
+    </div>
 
   </div>
 </main>
