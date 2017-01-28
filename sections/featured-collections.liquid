@@ -1,0 +1,42 @@
+{% schema %}
+{
+  "name": "Featured collections",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "id": "title",
+      "type": "text",
+      "label": "Section title"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "id": "collection",
+          "type": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collections",
+      "category": "Features"
+    }
+  ]
+}
+{% endschema %}
+<div class="container bg-white my-5 text-center">
+  <h2 class="mb-4">{{ section.settings.title | escape }}</h2>
+  <div class="row justify-content-md-center">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'collection' -%}
+        {%- include 'collection' with collections[block.settings.collection] -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
