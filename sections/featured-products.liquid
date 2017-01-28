@@ -1,0 +1,33 @@
+{% schema %}
+{
+  "name": "Featured products",
+  "settings": [
+    {
+      "id": "title",
+      "type": "text",
+      "label": "Section title",
+      "info": "Defaults to collection title."
+    },
+    {
+      "id": "collection",
+      "type": "collection",
+      "label": "Collection"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured products",
+      "category": "Features"
+    }
+  ]
+}
+{% endschema %}
+{%- assign collection = collections[section.settings.collection] -%}
+<div class="container bg-white my-5 text-center">
+  <h2 class="mb-4">{{ section.settings.title | default: collection.title | escape }}</h2>
+  <div class="row justify-content-md-center">
+    {%- for product in collection.products limit: 4 -%}
+      {%- include 'product' with product -%}
+    {%- endfor -%}
+  </div>
+</div>
