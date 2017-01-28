@@ -1,0 +1,11 @@
+<div class="col-3" {{ block.shopify_attributes }}>
+  {%- assign link_list = linklists[block.settings.link_list] -%}
+  {%- if link_list and link_list.links.size > 0 -%}
+    <h6>{{ link_list.title | escape }}</h6>
+    <nav class="nav flex-column">
+      {%- for link in link_list.links -%}
+        <a href="{{ link.url }}">{{ link.title | escape }}</a>
+      {%- endfor -%}
+    </nav>
+  {%- endif -%}
+</div>

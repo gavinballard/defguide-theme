@@ -1,0 +1,36 @@
+{% schema %}
+{
+  "name": "Footer",
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "Navigation menu",
+      "settings": [
+        {
+          "id": "link_list",
+          "type": "link_list",
+          "label": "Navigation menu"
+        }
+      ]
+    },
+    {
+      "type": "payment_icons",
+      "name": "Payment icons"
+    }
+  ]
+}
+{% endschema %}
+<footer class="bg-faded py-3">
+  <div class="container">
+    <div class="row">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'link_list' -%}
+            {%- include 'footer-block-link-list' -%}
+          {%- when 'payment_icons' -%}
+            {%- include 'footer-block-payment-icons' -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</footer>

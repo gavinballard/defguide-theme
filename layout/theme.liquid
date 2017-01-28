@@ -5,9 +5,10 @@
     {{- 'bootstrap.min.css' | asset_url | stylesheet_tag -}}
     {{- 'styles.css' | asset_url | stylesheet_tag -}}
   </head>
-  <body>
+  <body class="bg-faded">
     {%- section 'header' -%}
     {{ content_for_layout }}
+    {%- section 'footer' -%}
     {{- 'jquery-3.1.1.min.js' | asset_url | script_tag -}}
     {{- 'bootstrap.min.js' | asset_url | script_tag -}}
     {{- 'theme.js' | asset_url | script_tag -}}

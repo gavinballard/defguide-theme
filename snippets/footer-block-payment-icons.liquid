@@ -1,0 +1,14 @@
+<div class="col-3 justify-content-center" {{ block.shopify_attributes }}>
+  {%- unless shop.enabled_payment_types == empty -%}
+    {%- assign available_payment_icons = 'amazon_payments,american_express,apple_pay,bitcoin,cirrus,dankort,diners_club,discover,dogecoin,dwolla,forbrugsforeningen,interac,jcb,litecoin,maestro,master,paypal,stripe,visa' | split: ',' -%}
+
+    {%- for enabled_payment_type in shop.enabled_payment_types -%}
+      {%- if available_payment_icons contains enabled_payment_type -%}
+        {%- assign icon_snippet_name = enabled_payment_type | prepend: 'icon-' -%}
+        <span class="nav-item--payment-icon">
+          {%- include icon_snippet_name -%}
+        </span>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endunless -%}
+</div>
