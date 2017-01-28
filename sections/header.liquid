@@ -1,3 +1,16 @@
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "id": "primary_link_list",
+      "type": "link_list",
+      "label": "Primary navigation menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}
 <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
 
   {%- comment -%}
@@ -18,11 +31,13 @@
   <div class="collapse navbar-collapse" id="header-main-menu">
 
     {%- comment -%}
-      The following iterates through each link in the main navigation menu and renders it.
+      The following finds the navigation menu (link list) configured in the section settings.
+      It then iterates through each link in that lists and renders it.
     {%- endcomment -%}
-    {%- unless linklists.main-menu.links.size == 0 -%}
+    {%- assign primary_link_list = linklists[section.settings.primary_link_list] -%}
+    {%- unless primary_link_list == blank -%}
     <ul class="navbar-nav mr-auto">
-      {%- for link in linklists.main-menu.links -%}
+      {%- for link in primary_link_list.links -%}
       <li class="nav-item {% if link.active %}active{% endif %}">
         <a class="nav-link" href="{{ link.url }}">{{ link.title | escape }} {% if link.active %}<span class="sr-only">(current)</span>{% endif %}</a>
       </li>
