@@ -1,0 +1,39 @@
+{% schema %}
+{
+  "name": "Hero image",
+  "settings": [
+    {
+      "id": "image",
+      "type": "image_picker",
+      "label": "Hero image"
+    },
+    {
+      "id": "title",
+      "type": "text",
+      "label": "Title"
+    },
+    {
+      "id": "label",
+      "type": "text",
+      "label": "Button text"
+    },
+    {
+      "id": "href",
+      "type": "url",
+      "label": "Button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero image",
+      "category": "Images"
+    }
+  ]
+}
+{% endschema %}
+<div class="jumbotron jumbotron-fluid jumbotron-cover" style="background-image: url({{ section.settings.image | img_url: 'master', format: 'pjpg' }});">
+  <div class="container text-center py-5">
+    <h1 class="display-3 mb-5">{{ section.settings.title | escape }}</h1>
+    <a href="{{ section.settings.href }}" class="btn btn-primary btn-lg">{{ section.settings.label | escape }}</a>
+  </div>
+</div>
