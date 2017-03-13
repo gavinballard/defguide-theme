@@ -48,11 +48,9 @@
         <h5 class="text-muted">{{ product.vendor | escape }}</h5>
         <h3>{% if product.price_varies %}{{ product.price_min | money }} - {{ product.price_max | money }}{% else %}{{ product.price | money }}{% endif %}</h3>
 
-        <hr />
-        {{ product.description }}
-        <hr />
+        {%- include 'product-details' -%}
 
-        <form action="/cart/add" method="post" role="form">
+        <form action="/cart/add" method="post" role="form" class="mt-3">
 
           {%- if product.variants.size > 1 -%}
             <div class="form-group">
