@@ -1,5 +1,14 @@
 <main class="bg-white">
-  <div class="container py-5">
+  <div class="container py-3 py-md-5">
+
+    {%- comment -%}
+      Product details for display on mobile.
+    {%- endcomment -%}
+    <div class="hidden-md-up text-center mb-3">
+      <h1 >{{ product.title | escape }}</h1>
+      <h5 class="text-muted">{{ product.vendor | escape }}</h5>
+      <h3>{% if product.price_varies %}{{ product.price_min | money }} - {{ product.price_max | money }}{% else %}{{ product.price | money }}{% endif %}</h3>
+    </div>
 
     <div class="row">
 
@@ -26,7 +35,7 @@
               <span class="sr-only">Next</span>
             </a>
           </div>
-          <div class="row">
+          <div class="row hidden-sm-down">
             {%- for image in product.images -%}
               <div class="col-md-3 mt-3">
                 <a href="{{ image | product_img_url: 'master' }}" target="_blank" data-target="#product-image-carousel" data-slide-to="{{ forloop.index0 }}">
@@ -44,9 +53,15 @@
         Display product details (title, vendor, price and description) followed by an add to cart form.
       {%- endcomment -%}
       <div class="col-md-7">
-        <h1>{{ product.title | escape }}</h1>
-        <h5 class="text-muted">{{ product.vendor | escape }}</h5>
-        <h3>{% if product.price_varies %}{{ product.price_min | money }} - {{ product.price_max | money }}{% else %}{{ product.price | money }}{% endif %}</h3>
+
+        {%- comment -%}
+          Product details for display on non-mobile.
+        {%- endcomment -%}
+        <div class="hidden-sm-down">
+          <h1>{{ product.title | escape }}</h1>
+          <h5 class="text-muted">{{ product.vendor | escape }}</h5>
+          <h3>{% if product.price_varies %}{{ product.price_min | money }} - {{ product.price_max | money }}{% else %}{{ product.price | money }}{% endif %}</h3>
+        </div>
 
         {%- include 'product-details' -%}
 
@@ -65,7 +80,7 @@
             <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
           {%- endif -%}
 
-          <button type="submit" class="btn btn-primary btn-lg" {% unless product.available %}disabled="disabled"{% endunless %}>Add to cart</button>
+          <button type="submit" class="btn btn-primary btn-lg btn-xs-block" {% unless product.available %}disabled="disabled"{% endunless %}>Add to cart</button>
 
         </form>
       </div>
