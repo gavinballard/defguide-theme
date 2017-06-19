@@ -1,0 +1,29 @@
+<main class="bg-white">
+  <div class="container py-3 py-md-5">
+
+    <h1>{{ collection.title | escape }}</h1>
+
+    <div class="row">
+
+      <aside class="col-md-3">
+        <!-- @TODO: Add controls for sorting, filtering et cetera. -->
+      </aside>
+
+      {%- paginate collection.products by 12 -%}
+      <section class="col-md-9">
+        <div class="row">
+          {%- for product in collection.products -%}
+            {%- include 'product' -%}
+          {%- endfor -%}
+        </div>
+
+        {%- if paginate.pages > 1 -%}
+          <div class="text-center">
+            {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+          </div>
+        {%- endif -%}
+      </section>
+      {%- endpaginate -%}
+
+  </div>
+</main>
