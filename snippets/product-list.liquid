@@ -1,0 +1,14 @@
+<div class="row mb-2">
+  <div class="col-md-2">
+    <a href="{{ product.url }}">
+      <img src="{{ product.featured_image | product_img_url: '200x200', scale: 2, crop: 'center' }}" class="img-fluid" alt="{{ product.title | escape }}" />
+    </a>
+  </div>
+  <div class="col-md-8">
+    <h6 class="mt-2">{{ product.title | escape }}</h6>
+    <p class="text-muted">{{ product.vendor | escape }}</p>
+  </div>
+  <div class="col-md-2 text-right">
+    <h6 class="mt-2 text-muted">{{ product.price | money }}</h6>
+  </div>
+</div>
