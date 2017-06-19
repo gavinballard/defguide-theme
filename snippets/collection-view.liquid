@@ -47,7 +47,7 @@
                     {{ collection_option.title | escape }}
                   </span>
                 {%- else -%}
-                  <a class="nav-link" href="{{ collection_option.url }}?view={{ collection-view }}&sort_by={{ collection.sort_by }}">
+                  <a class="nav-link" href="{{ collection_option.url }}?view={{ collection-view }}&sort_by={{ collection.sort_by }}" data-click-load="#collection-main">
                     {{ collection_option.title | escape }}
                   </a>
                 {%- endif -%}
@@ -63,9 +63,9 @@
             {% for tag in collection.tags %}
               <li class="nav-item">
                 {% if current_tags contains tag %}
-                  {{ '&#9745;' | append: tag | link_to_remove_tag:tag | replace:'title="', 'class="nav-link" title="' }}
+                  {{ '&#9745;' | append: tag | link_to_remove_tag:tag | replace:'title="', 'class="nav-link" data-click-load="#collection-main" title="' }}
                 {% else %}
-                  {{ '&#9744;' | append: tag | link_to_add_tag:tag | replace:'title="', 'class="nav-link" title="' }}
+                  {{ '&#9744;' | append: tag | link_to_add_tag:tag | replace:'title="', 'class="nav-link" data-click-load="#collection-main" title="' }}
                 {% endif %}
               </li>
             {% endfor %}

@@ -10,13 +10,29 @@
   $(document).on('submit', '[data-submit-load]', function(e) {
     e.preventDefault();
     var $form = $(this),
-        target = $form.attr('data-submit-load'),
         url = $form.attr('action'),
+        target = $form.attr('data-submit-load'),
         data = $form.serialize();
+
+    loadAndUpdateHistoryState(url, target, data);
+  });
+
+  // Add a listener for "Ajax load on click" <a> elements.
+  $(document).on('click', '[data-click-load]', function(e) {
+    e.preventDefault();
+    var $link = $(this),
+        url = $link.attr('href'),
+        target = $link.attr('data-click-load');
+
+    loadAndUpdateHistoryState(url, target, '');
+  });
+
+  // Perform an Ajax load using jQuery with the given parameters and update history state.
+  function loadAndUpdateHistoryState(url, target, data) {
     $(target).load(url + ' ' + target, data, function() {
       window.history.pushState({}, null, url + '?' + data);
     });
-  });
+  }
 
   // Remove the 'no-js' class from the body element, as JS is now available and initialised.
   $('body').removeClass('no-js');
