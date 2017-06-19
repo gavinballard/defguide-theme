@@ -6,6 +6,18 @@
     $(target).submit();
   });
 
+  // Add a listener for "Ajax load on submit" <form> elements.
+  $(document).on('submit', '[data-submit-load]', function(e) {
+    e.preventDefault();
+    var $form = $(this),
+        target = $form.attr('data-submit-load'),
+        url = $form.attr('action'),
+        data = $form.serialize();
+    $(target).load(url + ' ' + target, data, function() {
+      window.history.pushState({}, null, url + '?' + data);
+    });
+  });
+
   // Remove the 'no-js' class from the body element, as JS is now available and initialised.
   $('body').removeClass('no-js');
 
