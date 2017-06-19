@@ -33,6 +33,29 @@
         <div class="form-group">
           <button type="submit" class="btn btn-secondary">Update</button>
         </div>
+
+        <hr />
+
+        <div class="form-group">
+          <label>Category</label>
+          <ul class="nav flex-column">
+            {%- for collection_option in collections -%}
+              {%- unless collection_option.title contains '(Related)' -%}
+              <li class="nav-item">
+                {%- if collection.handle == collection_option.handle -%}
+                  <span class="nav-link">
+                    {{ collection_option.title | escape }}
+                  </span>
+                {%- else -%}
+                  <a class="nav-link" href="{{ collection_option.url }}?view={{ collection-view }}&sort_by={{ collection.sort_by }}">
+                    {{ collection_option.title | escape }}
+                  </a>
+                {%- endif -%}
+              </li>
+              {%- endunless -%}
+            {%- endfor -%}
+          </ul>
+        </div>
       </aside>
 
       {%- paginate collection.products by 12 -%}
