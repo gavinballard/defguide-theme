@@ -1,0 +1,12 @@
+(function($) {
+
+  // Add a listener for "submit on change" <select> elements.
+  $(document).on('change', '[data-submit-on-change]', function() {
+    var $select = $(this), target = $select.attr('data-submit-on-change');
+    $(target).submit();
+  });
+
+  // Remove the 'no-js' class from the body element, as JS is now available and initialised.
+  $('body').removeClass('no-js');
+
+})(jQuery);

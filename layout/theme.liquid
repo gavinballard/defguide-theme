@@ -5,7 +5,7 @@
     {{- 'bootstrap.min.css' | asset_url | stylesheet_tag -}}
     {{- 'styles.css' | asset_url | stylesheet_tag -}}
   </head>
-  <body class="bg-faded">
+  <body class="bg-faded no-js">
     {%- section 'header' -%}
     {{ content_for_layout }}
     {%- section 'footer' -%}
