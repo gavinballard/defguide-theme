@@ -1,0 +1,59 @@
+<main class="bg-white">
+  <div class="container py-3 py-md-5">
+
+    <h1>Your cart</h1>
+
+    {%- if cart.items.size > 0 -%}
+      <form action="/cart" method="post">
+        <table class="table">
+          <thead>
+            <tr>
+              <th colspan="2">Item</th>
+              <th class="text-center">Quantity</th>
+              <th class="text-right">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {%- for item in cart.items -%}
+            <tr>
+              <td style="width: 120px;">
+                <a href="{{ item.url }}">
+                  <img src="{{ item | img_url: '120x120', scale: 2, crop: 'center' }}" width="120" alt="{{ item.title | escape }}" />
+                </a>
+              </td>
+              <td>
+                <h6 class="mt-2">{{ item.title | escape }}</h6>
+                <p class="text-muted">{{ item.sku | escape }}</p>
+                <p class="text-muted"><a href="/cart/change?line={{ forloop.index }}&quantity=0">Remove</a></p>
+              </td>
+              <td style="width: 120px;" class="text-center">
+                <input type="number" name="updates[]" value="{{ item.quantity }}" class="form-control text-center" />
+              </td>
+              <td style="width: 120px;" class="text-right">
+                {{ item.line_price | money }}
+              </td>
+            </tr>
+            {%- endfor -%}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3"></td>
+              <td class="text-right"><strong>{{ cart.total_price | money }}</strong></td>
+            </tr>
+            <tr>
+              <td colspan="4" class="text-right">
+                <input type="submit" class="btn btn-secondary" name="update" value="Update" />
+                <input type="submit" class="btn btn-primary" name="checkout" value="Proceed to checkout" />
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </form>
+    {%- else -%}
+      <p>
+        Your cart is empty.
+      </p>
+    {%- endif -%}
+
+  </div>
+</main>
