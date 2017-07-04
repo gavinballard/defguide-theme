@@ -4,7 +4,7 @@
     <h1>Your cart</h1>
 
     {%- if cart.items.size > 0 -%}
-      <form action="/cart" method="post">
+      <form id="cart-form" action="/cart" method="post">
         <table class="table">
           <thead>
             <tr>
@@ -27,7 +27,7 @@
                 <p class="text-muted"><a href="/cart/change?line={{ forloop.index }}&quantity=0">Remove</a></p>
               </td>
               <td style="width: 120px;" class="text-center">
-                <input type="number" name="updates[]" value="{{ item.quantity }}" class="form-control text-center" />
+                <input type="number" name="updates[]" data-submit-on-change="#cart-form" value="{{ item.quantity }}" class="form-control text-center" />
               </td>
               <td style="width: 120px;" class="text-right">
                 {{ item.line_price | money }}
@@ -42,7 +42,7 @@
             </tr>
             <tr>
               <td colspan="4" class="text-right">
-                <input type="submit" class="btn btn-secondary" name="update" value="Update" />
+                <input type="submit" class="btn btn-secondary js-hide" name="update" value="Update" />
                 <input type="submit" class="btn btn-primary" name="checkout" value="Proceed to checkout" />
               </td>
             </tr>
