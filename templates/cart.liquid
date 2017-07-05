@@ -41,6 +41,11 @@
               <td class="text-right"><strong>{{ cart.total_price | money }}</strong></td>
             </tr>
             <tr>
+              <td id="cart-shipping" colspan="4" class="text-right text-muted">
+                <em>Shipping and taxes calculated during checkout</em>
+              </td>
+            </tr>
+            <tr>
               <td colspan="4" class="text-right">
                 <input type="submit" class="btn btn-secondary js-hide" name="update" value="Update" />
                 <input type="submit" class="btn btn-primary" name="checkout" value="Proceed to checkout" />
