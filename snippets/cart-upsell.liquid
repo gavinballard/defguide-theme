@@ -1,0 +1,33 @@
+{%- comment -%}
+  This code iterates through
+{%- endcomment -%}
+
+{%- assign upsell_product = nil -%}
+
+{%- for item in cart.items -%}
+  {%- assign upsell_product_handle = item.product.metafields.theme.upsell_product_handle -%}
+  {%- if upsell_product_handle == blank -%}
+    {%- continue -%}
+  {%- endif -%}
+
+  {%- assign already_in_cart = false -%}
+  {%- for upsell_item in cart.items -%}
+    {%- if upsell_product_handle == upsell_item.handle -%}
+      {%- assign already_in_cart = true -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- unless already_in_cart -%}
+    {%- assign upsell_product = all_products[upsell_product_handle] -%}
+    {%- break -%}
+  {%- endunless -%}
+{%- endfor -%}
+
+{% assign upsell_product = all_products.snow-peak-titanium-single-wall-cup %}
+
+{%- if upsell_product -%}
+<aside>
+  <img src="{{ upsell_product.featured_image | product_img_url: '50x50', scale: 2, crop: 'center' }}" width="50" alt="{{ product.title | escape }}" />
+  Special offer: <a href="/cart/add?id={{ upsell_product.variants.first.id }}">add a {{ upsell_product.title }}</a> to your cart for only {{ upsell_product.variants.first.price | money }}
+</aside>
+{%- endif -%}
